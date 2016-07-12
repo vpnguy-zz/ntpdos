@@ -3,12 +3,13 @@ from scapy.all import *
 import sys
 import threading
 import time
-import random
+import random	# For Random source port
 #NTP Amp DOS attack
 #by DaRkReD
 #usage ntpdos.py <target ip> <ntpserver list> <number of threads> ex: ntpdos.py 1.2.3.4 file.txt 10
 #FOR USE ON YOUR OWN NETWORK ONLY
 
+# Random source port added by JDMoore0883
 
 #packet sender
 def deny():
